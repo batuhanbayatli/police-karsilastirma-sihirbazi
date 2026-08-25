@@ -3,25 +3,309 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poliçe Teklif Karşılaştırma Sihirbazı | Batuhan Bayatlı</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Poliçe Teklif Karşılaştırma Sihirbazı | SigortamRahat</title>
+   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1e293b;
+            --secondary: #2563eb;
+            --accent: #f59e0b;
+            --bg: #f8fafc;
+            --success: #10b981;
+            --danger: #ef4444;
+        }
+
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+
+        body {
+            margin: 0;
+            background-color: var(--bg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #1e293b;
+        }
+
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .logo { font-size: 1.1rem; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+        .logo span { font-size: 0.75rem; opacity: 0.7; font-weight: normal; }
+        .header-buttons { display: flex; gap: 8px; }
+
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.2); }
+        .btn-shine {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+        .btn-shine:hover { opacity: 0.9; }
+
+        
+        .main-container { display: flex; flex: 1; overflow: hidden; }
+
+        
+        #input-panel {
+            width: 360px;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 2px 0 12px rgba(0,0,0,0.05);
+            overflow-y: auto;
+            border-right: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+        }
+        #input-panel h3 { margin-top: 0; font-size: 1.1rem; color: var(--primary); }
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; margin-bottom: 5px; color: #475569; font-size: 0.85rem; font-weight: 700; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: 0.2s;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--secondary); }
+        .checkbox-group { display: flex; align-items: center; gap: 8px; margin: 12px 0; }
+        .checkbox-group input { width: 16px; height: 16px; cursor: pointer; }
+        .checkbox-group label { font-size: 0.85rem; font-weight: 600; color: #475569; cursor: pointer; }
+
+        .btn-add {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: 0.2s;
+        }
+        .btn-add:hover { opacity: 0.9; }
+        .btn-clear {
+            background-color: transparent;
+            color: var(--danger);
+            border: 1px solid #fecaca;
+            padding: 8px;
+            width: 100%;
+            margin-top: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .btn-clear:hover { background-color: #fef2f2; }
+
+       
+        #display-area {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto;
+            background-color: var(--bg);
+        }
+        .presentation-header { text-align: center; margin-bottom: 25px; }
+        .presentation-header h2 { margin: 0; font-size: 1.5rem; color: var(--primary); font-weight: 800; }
+        .presentation-header p { margin: 5px 0 0; font-size: 0.9rem; color: #64748b; }
+
+        .cards-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            width: 100%;
+            max-width: 1000px;
+        }
+        .offer-card {
+            background: white;
+            width: 270px;
+            border-radius: 12px;
+            padding: 22px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            border: 1px solid #e2e8f0;
+            text-align: center;
+            position: relative;
+            border-top: 4px solid var(--secondary);
+            transition: 0.2s;
+        }
+        .offer-card.recommended {
+            border-top: 4px solid var(--accent);
+            transform: scale(1.03);
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.15);
+            border-color: #fde68a;
+        }
+        .badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--accent);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+        .company-name { font-weight: 800; font-size: 1.15rem; color: var(--primary); margin-top: 5px; }
+        .product-name { color: #64748b; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; }
+        .price { font-size: 1.8rem; color: var(--secondary); font-weight: 900; margin: 12px 0; }
+        .features-box {
+            background: #f8fafc;
+            border: 1px solid #f1f5f9;
+            padding: 10px;
+            font-size: 0.85rem;
+            border-radius: 8px;
+            color: #475569;
+            text-align: left;
+            line-height: 1.4;
+            min-height: 50px;
+        }
+
+        .report-actions { display: flex; gap: 10px; margin-top: 30px; }
+        .btn-print {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-email {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .agency-footer {
+            margin-top: auto;
+            padding-top: 25px;
+            width: 100%;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+        .agency-footer h4 { margin: 0 0 4px; color: var(--primary); font-size: 0.95rem; }
+
+        /* MODAL */
+        .modal { display: none; position: fixed; z-index: 100; inset: 0; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); }
+        .modal-content {
+            background-color: white;
+            margin: 5vh auto;
+            padding: 24px;
+            width: 90%;
+            max-width: 700px;
+            border-radius: 12px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+        }
+        .close-modal { float: right; font-size: 24px; cursor: pointer; color: #94a3b8; }
+        .close-modal:hover { color: #000; }
+        .tabs { display: flex; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; gap: 8px; }
+        .tab-link {
+            background: none;
+            border: none;
+            padding: 10px 16px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #64748b;
+            border-bottom: 2px solid transparent;
+        }
+        .tab-link.active { color: var(--secondary); border-bottom-color: var(--secondary); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .split-view { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .item-list { list-style: none; padding: 0; max-height: 200px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 6px; margin-top: 10px; }
+        .item-list li { padding: 8px 12px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; }
+        .backup-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
+        .card-box { border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; text-align: center; background: #f8fafc; font-size: 0.85rem; }
+
+        
+        body.presentation-mode header, body.presentation-mode #input-panel, body.presentation-mode .no-presentation { display: none !important; }
+        body.presentation-mode #display-area { background: white; padding: 20px; }
+
+       
+        @media print {
+            .no-print { display: none !important; }
+            body, #display-area { background: white; display: block; height: auto; padding: 0; }
+            .cards-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .offer-card { width: 100%; border: 1px solid #cbd5e1; box-shadow: none; break-inside: avoid; }
+            .agency-footer { position: fixed; bottom: 10px; width: 100%; }
+        }
+    </style>
 </head>
 <body>
 
-    <header id="admin-header" class="no-print">
-        <div class="logo">🚀 Poliçe Teklif Karşılaştırma Sihirbazı<span style="font-size:0.8rem; opacity:0.7;">v3.0</span></div>
+  
+    <header class="no-print">
+        <div class="logo">
+            <i class="fa-solid fa-file-invoice-dollar"></i> Poliçe Teklif Sihirbazı <span>bGroup // SigortamRahat</span>
+        </div>
         <div class="header-buttons">
             <button onclick="UI.resetSession()" class="btn-secondary" title="Ekranı Temizle"><i class="fa-solid fa-user-plus"></i> Yeni Müşteri</button>
-            <button id="settings-btn" class="btn-secondary"><i class="fa-solid fa-gear"></i> Ayarlar & Veri</button>
-            <button id="presentation-btn" class="btn-shine"><i class="fa-solid fa-desktop"></i> Sunum Modu</button>
+            <button id="settings-btn" class="btn-secondary"><i class="fa-solid fa-gear"></i> Ayarlar &amp; Veri</button>
+            <button id="presentation-btn" class="btn-shine"><i class="fa-solid fa-desktop"></i> Sunum Modu (Vitrin)</button>
         </div>
     </header>
 
     <div class="main-container">
         
+       
         <aside id="input-panel" class="no-print">
-            <h3>📝 Hızlı Teklif Girişi</h3>
+            <h3>📝 Teklif Girişi</h3>
             
             <form id="offer-form">
                 <div class="form-group">
@@ -29,20 +313,18 @@
                     <input type="text" id="client-name" placeholder="Örn: Ahmet Bey - 34 ABC 12" required>
                 </div>
 
-                <hr>
-
                 <div class="form-group">
                     <label>Sigorta Şirketi</label>
                     <select id="company-select" onchange="UI.checkTemplate()">
                         <option value="" disabled selected>Seçiniz...</option>
-                        </select>
+                    </select>
                 </div>
 
                 <div class="form-group">
                     <label>Ürün / Poliçe Türü</label>
                     <select id="product-select" onchange="UI.checkTemplate()">
                         <option value="" disabled selected>Seçiniz...</option>
-                        </select>
+                    </select>
                 </div>
 
                 <div class="form-group">
@@ -51,72 +333,68 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Özellikler (Otomatik Gelir)</label>
+                    <label>Teminat &amp; Özellikler</label>
                     <textarea id="feature" rows="2" placeholder="Şirket ve ürün seçince otomatik dolabilir..."></textarea>
                 </div>
 
                 <div class="checkbox-group">
                     <input type="checkbox" id="is-recommended">
-                    <label for="is-recommended">Bu teklifi "Tavsiye Edilen" yap</label>
+                    <label for="is-recommended">⭐ Bu teklifi "Tavsiye Edilen" yap</label>
                 </div>
 
-                <button type="submit" class="btn-add">➕ Teklifi Ekle</button>
+                <button type="submit" class="btn-add">➕ Teklifi Kartlara Ekle</button>
             </form>
 
-            <div class="action-buttons">
-                <button onclick="UI.clearOffersOnly()" class="btn-clear">🗑️ Sadece Teklifleri Sil</button>
-            </div>
-            
-            <div class="dev-signature" style="margin-top: 30px; text-align: center;">
-                <p>Geliştirici:</p>
-                <a href="https://www.linkedin.com/in/batuhanbayatlı/" target="_blank">
-                    <i class="fa-brands fa-linkedin"></i> Batuhan Bayatlı
-                </a>
+            <button onclick="UI.clearOffersOnly()" class="btn-clear">🗑️ Sadece Teklifleri Temizle</button>
+
+            <div style="margin-top: auto; padding-top: 20px; text-align: center; font-size: 0.8rem; color: #94a3b8;">
+                Geliştirici: <a href="https://www.linkedin.com/in/batuhanbayatlı/" target="_blank" style="color:var(--secondary); text-decoration:none; font-weight:bold;">Batuhan Bayatlı</a>
             </div>
         </aside>
 
+        
         <main id="display-area">
             <div class="presentation-header">
                 <h2 id="display-client">Sayın Müşterimiz İçin Özel Teklifler</h2>
-                <p id="sub-title">Sizin için en uygun seçenekleri karşılaştırdık.</p>
+                <p id="sub-title">Sizin için hazırladığımız alternatifleri aşağıda karşılaştırabilirsiniz.</p>
             </div>
 
-            <div id="cards-container" class="cards-grid">
-                </div>
+            <div id="cards-container" class="cards-grid"></div>
 
-            <div class="report-actions no-print">
-                <button onclick="window.print()" class="btn-print"><i class="fa-solid fa-print"></i> Yazdır / PDF</button>
+            <div class="report-actions no-print no-presentation">
+                <button onclick="window.print()" class="btn-print"><i class="fa-solid fa-print"></i> Yazdır / A4 PDF</button>
                 <button onclick="UI.sendEmail()" class="btn-email"><i class="fa-solid fa-envelope"></i> E-Posta Gönder</button>
             </div>
 
             <footer class="agency-footer">
                 <div class="agency-info">
-                    <h4 id="footer-agency-name">🛡️ Acente Adı</h4>
+                    <h4 id="footer-agency-name">🛡️ Acenteniz</h4>
                     <p id="footer-agency-contact">İletişim Bilgileri</p>
                 </div>
             </footer>
         </main>
     </div>
 
+    
     <div id="settings-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
-            <h2>⚙️ Sistem Yönetimi</h2>
+            <h2 style="margin-top:0; font-size:1.3rem; color:var(--primary);">⚙️ Sistem &amp; Acente Yönetimi</h2>
             
             <div class="tabs">
                 <button class="tab-link active" onclick="UI.openTab(event, 'tab-agency')">Acente</button>
-                <button class="tab-link" onclick="UI.openTab(event, 'tab-lists')">Şirket & Ürünler</button>
+                <button class="tab-link" onclick="UI.openTab(event, 'tab-lists')">Şirket &amp; Ürünler</button>
                 <button class="tab-link" onclick="UI.openTab(event, 'tab-templates')">⚡ Otomasyon</button>
                 <button class="tab-link" onclick="UI.openTab(event, 'tab-backup')">💾 Yedek/Sıfırla</button>
             </div>
 
             <div id="tab-agency" class="tab-content active">
                 <div class="form-group">
-                    <label>Acente Adı</label>
+                    <label>Acente Ünvanı</label>
                     <input type="text" id="set-agency-name">
                 </div>
                 <div class="form-group">
-                    <label>İletişim Bilgisi</label>
+                    <label>İletişim / Telefon</label>
                     <input type="text" id="set-agency-contact">
                 </div>
                 <button onclick="saveAgencySettings()" class="btn-add">Bilgileri Kaydet</button>
@@ -125,18 +403,18 @@
             <div id="tab-lists" class="tab-content">
                 <div class="split-view">
                     <div>
-                        <h4>🏢 Sigorta Şirketleri</h4>
-                        <div class="add-row">
-                            <input type="text" id="new-company" placeholder="Şirket Adı">
-                            <button onclick="addCustomItem('company')">Ekle</button>
+                        <h4 style="margin:0 0 8px;">🏢 Sigorta Şirketleri</h4>
+                        <div style="display:flex; gap:6px;">
+                            <input type="text" id="new-company" placeholder="Şirket Adı" style="padding:6px; font-size:0.85rem; border:1px solid #ccc; border-radius:4px; flex:1;">
+                            <button onclick="addCustomItem('company')" style="background:var(--primary); color:white; border:none; border-radius:4px; padding:0 12px; cursor:pointer;">Ekle</button>
                         </div>
                         <ul id="company-list" class="item-list"></ul>
                     </div>
                     <div>
-                        <h4>📦 Ürünler / Branşlar</h4>
-                        <div class="add-row">
-                            <input type="text" id="new-product" placeholder="Ürün Adı (Örn: Kasko)">
-                            <button onclick="addCustomItem('product')">Ekle</button>
+                        <h4 style="margin:0 0 8px;">📦 Ürün / Branşlar</h4>
+                        <div style="display:flex; gap:6px;">
+                            <input type="text" id="new-product" placeholder="Ürün Adı" style="padding:6px; font-size:0.85rem; border:1px solid #ccc; border-radius:4px; flex:1;">
+                            <button onclick="addCustomItem('product')" style="background:var(--primary); color:white; border:none; border-radius:4px; padding:0 12px; cursor:pointer;">Ekle</button>
                         </div>
                         <ul id="product-list" class="item-list"></ul>
                     </div>
@@ -144,52 +422,379 @@
             </div>
 
             <div id="tab-templates" class="tab-content">
-                <p style="font-size:0.9rem; color:#666; margin-bottom:10px;">
-                    Bir şirket ve ürün seçtiğinizde özelliklerin otomatik dolmasını sağlayın.
+                <p style="font-size:0.85rem; color:#64748b; margin-bottom:12px;">
+                    Şirket ve ürün seçildiğinde teminatların kutuya otomatik dolmasını sağlayın.
                 </p>
-                <div class="form-group">
-                    <label>Şirket Seçin:</label>
-                    <select id="tmpl-company"></select>
-                </div>
-                <div class="form-group">
-                    <label>Ürün Seçin:</label>
-                    <select id="tmpl-product"></select>
-                </div>
-                <div class="form-group">
-                    <label>Otomatik Gelecek Özellikler:</label>
-                    <input type="text" id="tmpl-features" placeholder="Örn: Orijinal Cam, 15 Gün İkame...">
-                </div>
-                <button onclick="saveTemplate()" class="btn-add">Otomasyonu Kaydet</button>
-                
-                <hr>
-                <h4>Kayıtlı Otomasyonlar</h4>
+                <div class="form-group"><label>Şirket:</label><select id="tmpl-company"></select></div>
+                <div class="form-group"><label>Ürün:</label><select id="tmpl-product"></select></div>
+                <div class="form-group"><label>Otomatik Gelecek Teminatlar:</label><input type="text" id="tmpl-features" placeholder="Örn: Orijinal Cam, İMM 10.000.000 TL, 15 Gün İkame"></div>
+                <button onclick="saveTemplate()" class="btn-add">Otomasyon Kuralını Kaydet</button>
+                <hr style="border:0; border-top:1px solid #e2e8f0; margin:16px 0;">
+                <h4 style="margin:0 0 8px;">Kayıtlı Otomasyonlar</h4>
                 <ul id="template-list" class="item-list"></ul>
             </div>
 
             <div id="tab-backup" class="tab-content">
                 <div class="backup-grid">
                     <div class="card-box">
-                        <h4>📤 Yedek Al</h4>
-                        <p>Tüm ayarlarınızı ve şablonlarınızı bilgisayarınıza indirin.</p>
-                        <button onclick="DataManager.exportData()" class="btn-shine">Yedeği İndir (JSON)</button>
+                        <h4 style="margin:0 0 6px;">📤 Yedek Al</h4>
+                        <p style="color:#64748b;">Tüm ayar ve şablonları JSON olarak indirin.</p>
+                        <button onclick="DataManager.exportData()" class="btn-shine" style="width:100%; justify-content:center;">Yedeği İndir</button>
                     </div>
                     <div class="card-box">
-                        <h4>📥 Yedek Yükle</h4>
-                        <p>Daha önce aldığınız yedeği sisteme geri yükleyin.</p>
-                        <input type="file" id="import-file" onchange="DataManager.importData(this)" style="margin-top:10px;">
+                        <h4 style="margin:0 0 6px;">📥 Yedek Yükle</h4>
+                        <p style="color:#64748b;">Daha önceki JSON yedeğini yükleyin.</p>
+                        <input type="file" id="import-file" onchange="DataManager.importData(this)" style="font-size:0.75rem; margin-top:8px; width:100%;">
                     </div>
-                    <div class="card-box danger-zone">
-                        <h4>⚠️ Fabrika Ayarları</h4>
-                        <p>DİKKAT: Her şeyi siler ve sistemi sıfırlar.</p>
-                        <button onclick="DataManager.factoryReset()" class="btn-clear" style="background-color:#c0392b;">Sistemi Sıfırla</button>
+                    <div class="card-box" style="border-color:#fecaca; background:#fff5f5;">
+                        <h4 style="margin:0 0 6px; color:var(--danger);">⚠️ Sıfırla</h4>
+                        <p style="color:#64748b;">Tüm verileri siler ve temizler.</p>
+                        <button onclick="DataManager.factoryReset()" class="btn-clear" style="background-color:var(--danger); color:white; margin:0;">Sistemi Sıfırla</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="offer.js"></script>
-    <script src="ui.js"></script>
-    <script src="app.js"></script>
+    
+    <script>
+        class DataManager {
+            static getOffers() { return JSON.parse(localStorage.getItem('tv3_offers')) || []; }
+            static addOffer(offer) {
+                const offers = DataManager.getOffers();
+                offer.id = Date.now();
+                offers.push(offer);
+                localStorage.setItem('tv3_offers', JSON.stringify(offers));
+            }
+            static removeOffer(id) {
+                let offers = DataManager.getOffers().filter(o => o.id !== id);
+                localStorage.setItem('tv3_offers', JSON.stringify(offers));
+            }
+            static clearOffersOnly() { localStorage.removeItem('tv3_offers'); }
+
+            static getAgencyInfo() {
+                return JSON.parse(localStorage.getItem('tv3_agency')) || {
+                    name: "Güneş Sigorta Acenteliği",
+                    contact: "0212 000 00 00 | info@acenteniz.com"
+                };
+            }
+            static saveAgencyInfo(info) { localStorage.setItem('tv3_agency', JSON.stringify(info)); }
+
+            static getList(key) {
+                const defaultLists = {
+                    company: ["Allianz Sigorta", "Axa Sigorta", "Anadolu Sigorta", "Türkiye Sigorta", "Sompo Sigorta", "HDI Sigorta"],
+                    product: ["Kasko", "Trafik Sigortası", "Konut Sigortası", "DASK", "Tamamlayıcı Sağlık (TSS)", "Özel Sağlık (ÖSS)"]
+                };
+                return JSON.parse(localStorage.getItem(`tv3_list_${key}`)) || defaultLists[key] || [];
+            }
+            static addItemToList(key, item) {
+                const list = DataManager.getList(key);
+                if(!list.includes(item) && item.trim() !== "") {
+                    list.push(item);
+                    localStorage.setItem(`tv3_list_${key}`, JSON.stringify(list));
+                }
+            }
+            static removeItemFromList(key, item) {
+                let list = DataManager.getList(key).filter(i => i !== item);
+                localStorage.setItem(`tv3_list_${key}`, JSON.stringify(list));
+            }
+
+            static getTemplates() { return JSON.parse(localStorage.getItem('tv3_templates')) || []; }
+            static saveTemplate(company, product, features) {
+                let templates = DataManager.getTemplates();
+                const index = templates.findIndex(t => t.company === company && t.product === product);
+                if(index > -1) { templates[index].features = features; }
+                else { templates.push({ id: Date.now(), company, product, features }); }
+                localStorage.setItem('tv3_templates', JSON.stringify(templates));
+            }
+            static findTemplate(company, product) {
+                return DataManager.getTemplates().find(t => t.company === company && t.product === product);
+            }
+            static removeTemplate(id) {
+                let templates = DataManager.getTemplates().filter(t => t.id !== id);
+                localStorage.setItem('tv3_templates', JSON.stringify(templates));
+            }
+
+            static exportData() {
+                const data = {
+                    agency: DataManager.getAgencyInfo(),
+                    companies: DataManager.getList('company'),
+                    products: DataManager.getList('product'),
+                    templates: DataManager.getTemplates()
+                };
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = `TeklifSihirbazi_Yedek_${new Date().toLocaleDateString('tr-TR')}.json`;
+                a.click();
+            }
+
+            static importData(input) {
+                const file = input.files[0];
+                if(!file) return;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        if(data.agency) localStorage.setItem('tv3_agency', JSON.stringify(data.agency));
+                        if(data.companies) localStorage.setItem('tv3_list_company', JSON.stringify(data.companies));
+                        if(data.products) localStorage.setItem('tv3_list_product', JSON.stringify(data.products));
+                        if(data.templates) localStorage.setItem('tv3_templates', JSON.stringify(data.templates));
+                        alert("Yedek başarıyla yüklendi!");
+                        location.reload();
+                    } catch(err) { alert("Hatalı dosya formatı!"); }
+                };
+                reader.readAsText(file);
+            }
+
+            static factoryReset() {
+                if(confirm("TÜM VERİLER VE AYARLAR SİLİNECEK! Onaylıyor musunuz?")) {
+                    localStorage.clear();
+                    location.reload();
+                }
+            }
+        }
+
+        class UI {
+            static displayOffers() {
+                const container = document.getElementById('cards-container');
+                container.innerHTML = '';
+                const offers = DataManager.getOffers();
+                const agency = DataManager.getAgencyInfo();
+
+                document.getElementById('footer-agency-name').innerText = `🛡️ ${agency.name}`;
+                document.getElementById('footer-agency-contact').innerText = `📞 ${agency.contact}`;
+
+                if(offers.length === 0) {
+                    container.innerHTML = '<div style="color:#94a3b8; text-align:center; width:100%; margin-top:50px; font-weight:600;">Henüz teklif eklenmedi.<br>Sol panelden ilk teklifinizi oluşturabilirsiniz.</div>';
+                    return;
+                }
+
+                offers.forEach(offer => {
+                    const card = document.createElement('div');
+                    let cardClass = 'offer-card';
+                    let badgeHTML = '';
+                    
+                    if (offer.isRecommended) {
+                        cardClass += ' recommended';
+                        badgeHTML = '<div class="badge">⭐ TAVSİYE EDİLEN</div>';
+                    }
+                    const formattedPrice = Number(offer.price).toLocaleString('tr-TR');
+
+                    card.className = cardClass;
+                    card.innerHTML = `
+                        ${badgeHTML}
+                        <div class="company-name">${offer.company}</div>
+                        <div class="product-name">${offer.product}</div>
+                        <div class="price">${formattedPrice} ₺</div>
+                        <div class="features-box">${offer.features || 'Standart Poliçe Teminatları'}</div>
+                        <button class="btn-clear no-print no-presentation" onclick="deleteOffer(${offer.id})" style="border:none; color:var(--danger); margin-top:10px; font-size:0.8rem; cursor:pointer;">
+                           <i class="fa-solid fa-trash"></i> Kaldır
+                        </button>
+                    `;
+                    container.appendChild(card);
+                });
+
+                const clientName = document.getElementById('client-name').value;
+                if(clientName) document.getElementById('display-client').innerText = `Sayın ${clientName} İçin Özel Teklifler`;
+            }
+
+            static populateDropdowns() {
+                const companies = DataManager.getList('company');
+                const products = DataManager.getList('product');
+                
+                const cSelect = document.getElementById('company-select');
+                const pSelect = document.getElementById('product-select');
+                const tCSelect = document.getElementById('tmpl-company');
+                const tPSelect = document.getElementById('tmpl-product');
+
+                const fill = (sel, list) => {
+                    const current = sel.value;
+                    sel.innerHTML = '<option value="" disabled selected>Seçiniz...</option>' + 
+                                    list.map(i => `<option value="${i}">${i}</option>`).join('');
+                    if(list.includes(current)) sel.value = current;
+                };
+
+                fill(cSelect, companies); fill(pSelect, products);
+                fill(tCSelect, companies); fill(tPSelect, products);
+            }
+
+            static checkTemplate() {
+                const comp = document.getElementById('company-select').value;
+                const prod = document.getElementById('product-select').value;
+                if(comp && prod) {
+                    const tmpl = DataManager.findTemplate(comp, prod);
+                    if(tmpl) {
+                        const featureBox = document.getElementById('feature');
+                        featureBox.value = tmpl.features;
+                        featureBox.style.borderColor = 'var(--success)';
+                        setTimeout(() => featureBox.style.borderColor = '#cbd5e1', 1000);
+                    }
+                }
+            }
+
+            static sendEmail() {
+                const client = document.getElementById('client-name').value || "Müşterimiz";
+                const offers = DataManager.getOffers();
+                const agency = DataManager.getAgencyInfo();
+                
+                if(offers.length === 0) { alert("Mail göndermek için önce teklif ekleyiniz."); return; }
+
+                let body = `Sayın ${client},\n\nAcenteniz ${agency.name} olarak sizin için hazırladığımız karşılaştırmalı teklif tablosu aşağıdadır:\n\n`;
+                
+                offers.forEach((o, index) => {
+                    body += `SEÇENEK ${index + 1}:\n`;
+                    body += `FİRMA: ${o.company}\n`;
+                    body += `ÜRÜN: ${o.product}\n`;
+                    body += `FİYAT: ${Number(o.price).toLocaleString('tr-TR')} TL\n`;
+                    body += `ÖZELLİKLER: ${o.features}\n`;
+                    if(o.isRecommended) body += `⭐ TAVSİYE EDİLEN TEKLİF\n`;
+                    body += `--------------------------------\n\n`;
+                });
+
+                body += `Detaylı bilgi ve poliçeleştirme için bize ulaşabilirsiniz.\n\n${agency.name}\n${agency.contact}`;
+                window.open(`mailto:?subject=${encodeURIComponent(`${client} - Sigorta Teklif Çalışması`)}&body=${encodeURIComponent(body)}`);
+            }
+
+            static resetSession() {
+                if(confirm("Ekran temizlensin mi? (Kayıtlı şirket ve ayarlarınız silinmez)")) {
+                    document.getElementById('offer-form').reset();
+                    DataManager.clearOffersOnly();
+                    UI.displayOffers();
+                }
+            }
+            
+            static clearOffersOnly() {
+                if(confirm("Sadece ekrandaki teklif kartları silinsin mi?")) {
+                    DataManager.clearOffersOnly();
+                    UI.displayOffers();
+                }
+            }
+
+            static loadSettingsToModal() {
+                const agency = DataManager.getAgencyInfo();
+                document.getElementById('set-agency-name').value = agency.name;
+                document.getElementById('set-agency-contact').value = agency.contact;
+                UI.renderList('company-list', 'company');
+                UI.renderList('product-list', 'product');
+                UI.renderTemplates();
+            }
+
+            static renderList(elId, key) {
+                const list = DataManager.getList(key);
+                document.getElementById(elId).innerHTML = list.map(item => `
+                    <li><span>${item}</span> <i class="fa-solid fa-trash" onclick="removeItem('${key}', '${item}')" style="color:var(--danger); cursor:pointer;"></i></li>
+                `).join('');
+            }
+
+            static renderTemplates() {
+                const list = DataManager.getTemplates();
+                document.getElementById('template-list').innerHTML = list.map(t => `
+                    <li>
+                        <div><b>${t.company} - ${t.product}</b><br><span style="font-size:0.75rem; color:#64748b;">${t.features}</span></div>
+                        <i class="fa-solid fa-trash" onclick="removeTemplate(${t.id})" style="color:var(--danger); cursor:pointer;"></i>
+                    </li>
+                `).join('');
+            }
+
+            static openTab(evt, tabName) {
+                const contents = document.getElementsByClassName("tab-content");
+                for(let c of contents) c.style.display = "none";
+                const links = document.getElementsByClassName("tab-link");
+                for(let l of links) l.classList.remove("active");
+                document.getElementById(tabName).style.display = "block";
+                evt.currentTarget.classList.add("active");
+            }
+
+            static togglePresentationMode() {
+                document.body.classList.toggle('presentation-mode');
+                if (document.body.classList.contains('presentation-mode')) {
+                    alert("Vitrin / Sunum Modu Aktif! Çıkmak için ESC tuşuna basın.");
+                }
+            }
+        }
+
+        
+        window.deleteOffer = (id) => { DataManager.removeOffer(id); UI.displayOffers(); };
+        window.saveAgencySettings = () => {
+            DataManager.saveAgencyInfo({
+                name: document.getElementById('set-agency-name').value,
+                contact: document.getElementById('set-agency-contact').value
+            });
+            UI.displayOffers();
+            alert("Acente bilgileri kaydedildi!");
+        };
+        window.addCustomItem = (type) => {
+            const input = document.getElementById(type === 'company' ? 'new-company' : 'new-product');
+            if(input.value.trim()) {
+                DataManager.addItemToList(type, input.value.trim());
+                UI.renderList(type + '-list', type);
+                UI.populateDropdowns();
+                input.value = '';
+            }
+        };
+        window.removeItem = (key, item) => {
+            if(confirm("Silmek istediğinize emin misiniz?")) {
+                DataManager.removeItemFromList(key, item);
+                UI.renderList(key + '-list', key);
+                UI.populateDropdowns();
+            }
+        };
+        window.saveTemplate = () => {
+            const c = document.getElementById('tmpl-company').value;
+            const p = document.getElementById('tmpl-product').value;
+            const f = document.getElementById('tmpl-features').value;
+            if(c && p && f) {
+                DataManager.saveTemplate(c, p, f);
+                UI.renderTemplates();
+                alert("Otomasyon kuralı kaydedildi!");
+            } else { alert("Lütfen tüm alanları seçiniz."); }
+        };
+        window.removeTemplate = (id) => {
+            if(confirm("Kural silinsin mi?")) { DataManager.removeTemplate(id); UI.renderTemplates(); }
+        };
+
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            UI.populateDropdowns();
+            UI.displayOffers();
+        });
+
+        document.getElementById('offer-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const offer = {
+                company: document.getElementById('company-select').value,
+                product: document.getElementById('product-select').value,
+                price: document.getElementById('price').value,
+                features: document.getElementById('feature').value,
+                isRecommended: document.getElementById('is-recommended').checked
+            };
+            if(!offer.company || !offer.product) { alert("Lütfen Şirket ve Ürün seçiniz."); return; }
+
+            DataManager.addOffer(offer);
+            UI.displayOffers();
+            document.getElementById('price').value = '';
+            document.getElementById('feature').value = '';
+            document.getElementById('is-recommended').checked = false;
+        });
+
+        document.getElementById('presentation-btn').addEventListener('click', UI.togglePresentationMode);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape" && document.body.classList.contains('presentation-mode')) {
+                UI.togglePresentationMode();
+            }
+        });
+        document.getElementById('client-name').addEventListener('input', (e) => {
+            const val = e.target.value;
+            document.getElementById('display-client').innerText = val ? `Sayın ${val} İçin Özel Teklifler` : "Sayın Müşterimiz İçin Özel Teklifler";
+        });
+
+        const modal = document.getElementById('settings-modal');
+        const settingsBtn = document.getElementById('settings-btn');
+        const closeModal = document.getElementsByClassName("close-modal")[0];
+        settingsBtn.onclick = () => { UI.loadSettingsToModal(); modal.style.display = "block"; };
+        closeModal.onclick = () => modal.style.display = "none";
+        window.onclick = (event) => { if (event.target == modal) modal.style.display = "none"; };
+    </script>
 </body>
 </html>
