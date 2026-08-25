@@ -1,38 +1,55 @@
-# 🚀 Sigorta Teklif Karşılaştırma Sihirbazı
+# 🚀 Poliçe Teklif Karşılaştırma Sihirbazı // Akıllı Satış & Vitrin Motoru
+> **bGroup // SigortamRahat × DATEX Tasarım**  
+> *Sigorta Acenteleri İçin Sunucusuz, LocalStorage Tabanlı Hızlı Teklif Karşılaştırma, Sunum Modu ve A4 PDF Raporlama Aracı*
 
-Küçük ve orta ölçekli sigorta acentelerinin, müşterilerine sundukları fiyat tekliflerini profesyonel bir sunuma dönüştürmelerini sağlayan, tarayıcı tabanlı bir satış destek aracıdır.
-
-Karmaşık Excel tabloları veya WhatsApp üzerinden yazılan düzensiz fiyat listeleri yerine; müşterinize **kurumsal, anlaşılır ve şık** bir karşılaştırma tablosu sunmanızı sağlar.
-
-## 🌟 Öne Çıkan Özellikler
-
-* **⚡ Hızlı Teklif Girişi:** Müşteri bilgisi, şirket, ürün ve fiyatı saniyeler içinde girin.
-* **🖥️ Sunum Modu (Vitrin):** Tek tuşla yönetim panelini gizleyip, sadece müşteriye özel hazırlanmış şık fiyat kartlarını ekrana getirir.
-* **🖨️ PDF Raporlama & Yazdırma:** Teklifleri A4 formatında temiz bir çıktı olarak alabilir veya PDF olarak kaydedip gönderebilirsiniz.
-* **📧 E-Posta Entegrasyonu:** Teklif özetini otomatik olarak e-posta taslağına dönüştürür.
-* **🧠 Akıllı Otomasyon:** Sık kullandığınız şirket ve ürün eşleşmeleri için (Örn: Allianz + Kasko) otomatik özellik şablonları oluşturur.
-* **⚙️ Tam Kişiselleştirme:**
-    * Acente adı ve iletişim bilgilerini değiştirme.
-    * Çalışılan sigorta şirketlerini ve ürünleri (Trafik, Kasko, DASK vb.) ekleyip çıkarma.
-* **💾 Veri Güvenliği:**
-    * Tüm veriler tarayıcınızın yerel hafızasında (**LocalStorage**) saklanır.
-    * Yedekleme (Export JSON) ve Geri Yükleme (Import JSON) özelliği.
-    * Tek tuşla yeni müşteri için oturum temizleme.
-
-## 🛠️ Kullanılan Teknolojiler
-
-* **HTML5 & CSS3:** Modern, responsive ve "Print-Friendly" (Yazıcı dostu) tasarım.
-* **Vanilla JavaScript (ES6+):** Harici kütüphane bağımlılığı olmayan saf ve hızlı kod yapısı.
-* **LocalStorage API:** Sunucusuz veri tabanı yönetimi.
-
-## 👨‍💻 Geliştirici
-
-**Batuhan Bayatlı**
-
-Sigortacılık sektörü deneyimi ile yazılım teknolojilerini birleştiren InsurTech çözümleri geliştiriyorum.
-
-* LinkedIn: [linkedin.com/in/batuhanbayatlı/](https://www.linkedin.com/in/batuhanbayatlı/)
-* GitHub: [@batuhanbayatli](https://github.com/batuhanbayatli)
+<p align="left">
+  <a href="https://police-karsilastirma-sihirbazi.vercel.app/"><img src="https://img.shields.io/badge/Canlı%20Demo-Vercel-2563eb?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel Canlı Demo"></a>
+  <img src="https://img.shields.io/badge/Ecosystem-bGroup-0f172a?style=for-the-badge" alt="bGroup">
+  <img src="https://img.shields.io/badge/Partners-SigortamRahat%20%C3%97%20DATEX-2563eb?style=for-the-badge" alt="Marka İş Birliği">
+  <img src="https://img.shields.io/badge/Storage-LocalStorage%20%2F%20Client--Side-059669?style=for-the-badge" alt="LocalStorage">
+  <img src="https://img.shields.io/badge/License-MIT-10b981?style=for-the-badge" alt="License">
+</p>
 
 ---
-*Bu proje açık kaynaklıdır ve geliştirilmeye açıktır.*
+
+## 📌 Proje Özeti
+
+**Poliçe Teklif Karşılaştırma Sihirbazı**, sigorta acentelerinin müşterilerine sundukları fiyat tekliflerini karmaşık Excel tabloları veya düzensiz WhatsApp mesajları yerine kurumsal, anlaşılır ve şık bir karşılaştırma kartına dönüştüren **sunucusuz (Serverless & Client-Side)** bir satış destek aracıdır.
+
+Kullanıcı arayüzü; hızlı teklif girişi, müşteri önünde tek tuşla açılan **Sunum Modu (Vitrin)**, A4 boyutunda temiz PDF/Yazdırma çıktısı, otomatik e-posta taslağı oluşturucu ve şirket-ürün bazlı akıllı teminat otomasyonu sunar[cite: 7].
+
+---
+
+## ✨ Öne Çıkan Özellikler
+
+* ⚡ **Hızlı Teklif Girişi:** Müşteri adı/plaka, sigorta şirketi, branş, teminatlar ve fiyatı saniyeler içinde ekleme[cite: 7].
+* ⭐ **Tavsiye Edilen Teklif Vurgusu:** Belirlenen teklifi öne çıkaran özel rozet ve görsel hiyerarşi[cite: 5, 7].
+* 🖥️ **Sunum Modu (Vitrin):** Tek tuşla veya `ESC` kısayoluyla sol yönetim panelini gizleyip ekranda yalnızca müşteriye özel şık fiyat kartlarını bırakma[cite: 4, 7].
+* 🧠 **Akıllı Özellik Otomasyonu:** Şirket ve ürün eşleşmesi seçildiğinde (Örn: *Allianz + Kasko*), tanımlı poliçe teminatlarını otomatik doldurma[cite: 7].
+* 🖨️ **A4 PDF & Yazdırma Mizanpajı:** `@media print` mimarisiyle gereksiz butonları gizleyerek müşteriye verilecek temiz bir A4 teklif karşılaştırma formu üretme[cite: 7, 8].
+* 📧 **Otomatik E-Posta Taslağı:** Eklenen tüm teklifleri tek tıkla düzenli bir e-posta metnine dönüştürüp `mailto:` protokolüyle açma[cite: 7, 9].
+* 💾 **%100 Yerel Veri & Yedekleme:** Veriler tarayıcının yerel hafızasında (`LocalStorage`) saklanır; JSON olarak dışa aktarılabilir (Export) ve geri yüklenebilir (Import)[cite: 6, 7].
+
+---
+
+## 🛠️ Teknoloji Yığını
+
+* **Arayüz / Tasarım:** Semantic HTML5, Modern CSS3 Flexbox & Grid, FontAwesome 6[cite: 5, 7, 8]
+* **Baskı & Sunum:** CSS3 `@media print`, Presentation Mode Layout[cite: 8, 9]
+* **Mantık & Veri Motoru:** Vanilla ES6+ JavaScript (`DataManager`, `UI` sınıfları)[cite: 6, 7, 9]
+* **Depolama:** Web Storage API (`localStorage`)[cite: 6, 7]
+* **Dağıtım / CI-CD:** Vercel Edge Network
+
+---
+
+## 🚀 Yerel Kurulum ve Çalıştırma
+
+```bash
+# Repoyu klonlayın
+git clone [https://github.com/batuhanbayatli/police-karsilastirma-sihirbazi.git](https://github.com/batuhanbayatli/police-karsilastirma-sihirbazi.git)
+
+# Proje dizinine geçin
+cd police-karsilastirma-sihirbazi
+
+# index.html dosyasını doğrudan tarayıcınızda açın veya canlı demoyu ziyaret edin:
+# [https://police-karsilastirma-sihirbazi.vercel.app/](https://police-karsilastirma-sihirbazi.vercel.app/)
